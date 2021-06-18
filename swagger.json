@@ -1,0 +1,169 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Getting COVID-19 related data from [Urkraine Ministry of Health](https://covid19.gov.ua/analitichni-paneli-dashbordy) in operable JSON format, raw or gathered by region. Used for [UKR COVID-19](https://beyond-danube.github.io/ukr-covid-19/) data visualization on map",
+    "version": "1.0.0.0",
+    "title": "UKR COVID-19 MOZ DATA",
+    "contact": {
+      "email": "alexey.snv@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://raw.githubusercontent.com/git/git-scm.com/master/MIT-LICENSE.txt"
+    }
+  },
+  "host": "ukr-covid-19-moz-data.herokuapp.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/mozdata": {
+      "get": {
+        "summary": "Gets raw data for a given day",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "day",
+            "type": "string",
+            "default": 11,
+            "description": "Day number. Should have 2 digits, e.g. 01 for 1"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string",
+            "default": 11,
+            "description": "Month number. Should have 2 digits, e.g. 01 for 1"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "type": "string",
+            "default": 20,
+            "description": "Short year e.g. 20 for 2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mozdatabyregion": {
+      "get": {
+        "summary": "Gets data aggeragated by region for a given day",
+        "description": "Returns data for one particular field or a division result of two fields, depending on csvfield parameter. Data gathered by region providing it's name and ADM1_PCODE code as well for usage with maps",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "day",
+            "type": "string",
+            "default": 11,
+            "description": "Day number. Should have 2 digits, e.g. 01 for 1"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "type": "string",
+            "default": 11,
+            "description": "Month number. Should have 2 digits, e.g. 01 for 1"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "type": "string",
+            "default": 20,
+            "description": "Short year e.g. 20 for 2020"
+          },
+          {
+            "in": "query",
+            "name": "csvfield",
+            "type": "string",
+            "default": "Зайнято загалом хворими з COVID-19",
+            "description": "CSV filed to get. Can use 1 for value, or 2 separated by | for division result of those filelds."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegionData"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RegionData": {
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/region"
+          }
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/error"
+          }
+        },
+        "resolvedErrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/resolvedError"
+          }
+        }
+      }
+    },
+    "region": {
+      "properties": {
+        "ADM1_PCODE": {
+          "type": "string"
+        },
+        "DATA": {
+          "type": "number"
+        },
+        "OBL": {
+          "type": "string"
+        }
+      }
+    },
+    "error": {
+      "properties": {
+        "originalRow": {
+          "type": "string"
+        },
+        "originalValue": {
+          "type": "number"
+        },
+        "originalField": {
+          "type": "string"
+        },
+        "errorDetails": {
+          "type": "string"
+        }
+      }
+    },
+    "resolvedError": {
+      "properties": {
+        "fixedRow": {
+          "type": "string"
+        },
+        "fixedRegionValue": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

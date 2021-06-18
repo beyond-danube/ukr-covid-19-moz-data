@@ -1,0 +1,29 @@
+{
+  "name": "urk-moz-data",
+  "version": "0.1.0",
+  "description": "Get data from moz.gov.ua",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "got": "^11.3.0",
+    "tape": "^4.7.0"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "papaparse": "^5.3.0",
+    "request": "^2.88.2",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
